@@ -1,0 +1,55 @@
+const pool = require("../config/db");
+const Post = require("../models/Post");
+
+const fypPosts = async(req, res)=>{
+    try{
+        const user_id = req.user.id;
+        const posts = await Post.getFypPosts(user_id);
+        if(posts.length === 0)
+        {
+            res.status(200).json({message: "No posts available", fyp_posts: posts});
+        }
+        else{
+            res.status(200).json({message: "Successfull In constructing you fyp", fyp_posts: posts});
+        }
+    } catch(error)
+    {
+        console.log(error);
+        res.status(500).json({message: "Error occurred in the server while constructing your fyp"});
+    }
+};
+
+const myPosts = async(req, res)=>{
+    try{
+    const user_id = req.user.id;
+    const posts = await Post.getMyPosts(user_id);
+    if(posts.length === 0)
+    {
+        res.status(201).json({message: "You have no posts.", your_posts: posts});
+    }
+    else{
+        res.status(200).json({message: "Posts fetched successfully", your_posts: posts});
+    }
+    } catch(error)
+    {
+        console.log(error);
+        res.status(500).json({message: "Server error while fetching posts"});
+    }
+};
+
+const createPost = async(req, res)=>{
+    try{
+        // console.log("Data recieved from frontend: ", req.body);
+        const {id, user_id, content, username, user_avatar, upload_date} = req.body;
+        // const user_id = req.user.id;
+        const result = await Post.createPost(id, user_id, content, username, user_avatar, upload_date);
+        res.status(200).json({message: "Story published successfully", post_id: result.insertId});
+
+    } catch(error)
+    {
+        console.log(error);
+        res.status(500).json({message: "Server error while referencing POST model"});
+    }
+}
+
+module.exports = {myPosts, createPost, fypPosts};
