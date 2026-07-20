@@ -17,6 +17,10 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use("/", (req, res)=>{
+  res.status(200).json({message: "Backend reached successfully"});
+});
+
 app.use("/api/auth", authRoutes);
 
 app.use("/api/me/stories", postRoutes);
