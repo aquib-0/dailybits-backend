@@ -1,6 +1,7 @@
-const bcrypt = require('bcryptjs');
-const generateToken = require('../utils/generateTokens');
-const User = require("../models/User");
+import prisma from '../config/db.js';
+import bcrypt from 'bcryptjs';
+import generateToken from '../utils/generateTokens.js';
+import User from '../models/User.js';
 
 const register = async(req, res)=>{
     try{
@@ -10,7 +11,7 @@ const register = async(req, res)=>{
         //     "SELECT * FROM users WHERE email = ?",
         //     [email]
         // );
-        const existingUsers = await User.findByEmail(email);
+        const existingUsers = await prisma.user.findByEmail(email);
 
         if(existingUsers.length > 0)
         {
@@ -23,10 +24,14 @@ const register = async(req, res)=>{
         //     "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
         //     [username, email, hashedPassword]
         // );
-        const result = await User.createUser(username, email, hashedPassword);
-        res.status(201).json({message: "User registered successfully", userId: result.insertId});
+        // const result = await User.createUser(username, email, hashedPassword);
+        const newUser = await prisma.user.create({
+            data: {username, email, hashedPassword}
+        });
+        res.status(201).json({message: "User registered successfully", user: newUser});
+        // res.status(201).json({message: "User registered successfully", userId: newUser.insertId});
     } catch(e){
-        console.log(e);
+        console.log("Error while registering the  user!!",e);
 
         res.status(500).json({message: "Server error"});
     }
@@ -34,7 +39,7 @@ const register = async(req, res)=>{
 
 
 const login = async(req, res)=> {
-    console.log("Login function reached")
+    console.log("Login function reached in backend")
     try{
     const {email, password} = req.body;
     
@@ -72,4 +77,5 @@ const login = async(req, res)=> {
 }
 
 
-module.exports = {register, login};
+// module.exports = {register, login};
+export {register, login}

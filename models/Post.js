@@ -1,4 +1,5 @@
-const pool = require("../config/db");
+// const pool = require("../config/db");
+import pool from "../config/db.js";
 
 const createPost = async(id, user_id, content, username, user_avatar, upload_date)=>{
         console.log("In the Post model data recieved:", id, user_id, content);
@@ -26,4 +27,7 @@ const getFypPosts = async(user_id)=>{
     return posts;
 }
 
-module.exports = {getMyPosts, createPost, getFypPosts};
+const Post = {getMyPosts, createPost, getFypPosts};
+
+export default Post;
+// module.exports = {getMyPosts, createPost, getFypPosts};

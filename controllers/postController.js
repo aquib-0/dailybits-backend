@@ -1,5 +1,5 @@
-const pool = require("../config/db");
-const Post = require("../models/Post");
+import pool from "../config/db.js";
+import Post from '../models/Post.js';
 
 const fypPosts = async(req, res)=>{
     try{
@@ -52,4 +52,4 @@ const createPost = async(req, res)=>{
     }
 }
 
-module.exports = {myPosts, createPost, fypPosts};
+export {myPosts, createPost, fypPosts};

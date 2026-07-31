@@ -1,10 +1,11 @@
-require("dotenv").config();
-const cloudinary = require('cloudinary').v2;
-const express = require("express");
-const cors = require("cors");
+import { config, configDotenv } from 'dotenv';
+import {v2 as cloudinary} from 'cloudinary';
+import express from 'express';
+import cors from 'cors';
 
-const authRoutes = require("./routes/authRoutes");
-const postRoutes = require("./routes/postRoutes");
+import authRoutes from './routes/authRoutes.js';
+import postRoutes from './routes/postRoutes.js';
+configDotenv.apply();
 
 const app = express();
 
@@ -17,9 +18,9 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use("/", (req, res)=>{
-  res.status(200).json({message: "Backend reached successfully"});
-});
+// app.use("/", (req, res)=>{
+//   res.status(200).json({message: "Backend reached successfully"});
+// });
 
 app.use("/api/auth", authRoutes);
 
@@ -39,7 +40,7 @@ app.get('/api/sign-cloudinary', (req, res) => {
     { timestamp },
     process.env.CLOUDINARY_API_SECRET
   );
-  console.log("Backend data:", signature, timestamp, process.env.CLOUDINARY_API_KEY, process.env.CLOUDINARY_CLOUD_NAME);
+  // console.log("Backend data:", signature, timestamp, process.env.CLOUDINARY_API_KEY, process.env.CLOUDINARY_CLOUD_NAME);
 
   res.status(200).json({ 
     signature, 
