@@ -6,29 +6,30 @@ import User from '../models/User.js';
 const register = async(req, res)=>{
     try{
         const {username, email, password} = req.body;
-
-        // const [existingUsers] = await pool.query(
-        //     "SELECT * FROM users WHERE email = ?",
-        //     [email]
-        // );
-        const existingUsers = await prisma.user.findByEmail(email);
-
-        if(existingUsers.length > 0)
+        
+        // const existingUsers = await prisma.user.findByEmail(email);
+        const existingUsers = await prisma.users.findUnique({where: {email}});
+        // if(existingUsers.length > 0)
+        // {
+        //     return res.status(400).json({message: "Email already exists"});
+        // }
+        if(existingUsers)
         {
             return res.status(400).json({message: "Email already exists"});
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // const [result] = await pool.query(
-        //     "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-        //     [username, email, hashedPassword]
-        // );
+
         // const result = await User.createUser(username, email, hashedPassword);
-        const newUser = await prisma.user.create({
-            data: {username, email, hashedPassword}
+        const newUser = await prisma.users.create({
+            data: {
+                username: username,
+                email: email,
+                password: hashedPassword
+            }
         });
-        res.status(201).json({message: "User registered successfully", user: newUser});
+        res.status(201).json({message: "User registered successfully", user: [newUser.username, newUser.email]});
         // res.status(201).json({message: "User registered successfully", userId: newUser.insertId});
     } catch(e){
         console.log("Error while registering the  user!!",e);
@@ -43,17 +44,19 @@ const login = async(req, res)=> {
     try{
     const {email, password} = req.body;
     
-    const users = await User.findByEmail(email);
+    // const users = await User.findByEmail(email);
+    const user = await prisma.users.findUnique({where: {email: email}});
 
-    if(users.length === 0)
+    // if(users.length === 0)
+    // {
+    //     return res.status(404).json({message: "Invalid credentials"});
+    // }
+    if(!user)
     {
         return res.status(404).json({message: "Invalid credentials"});
     }
 
-    const user = users[0];
-    // console.log(users);
-    // console.log(users[0]);
-    // console.log(password);
+    // const user = users[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if(!isMatch)
     {
