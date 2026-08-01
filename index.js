@@ -14,7 +14,7 @@ app.use(express.json());
 
 //This is also a middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: [process.env.FRONTEND_URL, "https://dailybits-mu.vercel.app"],
     credentials: true,
 }));
 
