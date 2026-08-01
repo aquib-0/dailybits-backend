@@ -1,7 +1,7 @@
 import prisma from '../config/db.js';
 import bcrypt from 'bcryptjs';
 import generateToken from '../utils/generateTokens.js';
-import User from '../models/User.js';
+// import User from '../models/User.js';
 
 const register = async(req, res)=>{
     try{

@@ -1,6 +1,6 @@
-import pool from "../config/db.js";
+// import pool from "../config/db.js";
 import prisma from "../config/db.js";
-import Post from '../models/Post.js';
+// import Post from '../models/Post.js';
 
 const fypPosts = async(req, res)=>{
     try{

@@ -1,12 +1,12 @@
-import { configDotenv } from 'dotenv';
+import { config } from 'dotenv';
 import { PrismaClient } from '../src/generated/prisma/client/index.js';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import mysql from 'mysql2/promise';
-configDotenv.apply()
+// import mysql from 'mysql2/promise';
+config();
 
-const connection = mysql.createPool({
-    uri: process.env.DATABASE_URL,
-});
+// const connection = mysql.createPool({
+//     uri: process.env.DATABASE_URL,
+// });
 
 // const adapter = new PrismaMariaDb(connection);
 const adapter = new PrismaMariaDb({

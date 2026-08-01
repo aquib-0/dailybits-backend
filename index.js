@@ -1,11 +1,11 @@
-import { config, configDotenv } from 'dotenv';
+import { config } from 'dotenv';
 import {v2 as cloudinary} from 'cloudinary';
 import express from 'express';
 import cors from 'cors';
 
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
-configDotenv.apply();
+config();
 
 const app = express();
 
