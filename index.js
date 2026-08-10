@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 config();
 
 const app = express();
@@ -25,6 +26,8 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 
 app.use("/api/me/stories", postRoutes);
+
+app.use("/api/user", userRoutes);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

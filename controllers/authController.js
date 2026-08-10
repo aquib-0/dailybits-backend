@@ -40,7 +40,7 @@ const register = async(req, res)=>{
 
 
 const login = async(req, res)=> {
-    console.log("Login function reached in backend")
+    // console.log("Login function reached in backend")
     try{
     const {email, password} = req.body;
     

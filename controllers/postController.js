@@ -53,7 +53,7 @@ const createPost = async(req, res)=>{
         // console.log("Data recieved from frontend: ", req.body);
         const {id, user_id, content, username, user_avatar, upload_date} = req.body;
         // const result = await Post.createPost(id, user_id, content, username, user_avatar, upload_date);
-        const result = await prisma.posts.create({data: {id, user_id, content, username, user_avatar, upload_data}});
+        const result = await prisma.posts.create({data: {id, content, user_id, upload_date, username, user_avatar}});
         res.status(200).json({message: "Story published successfully", post_id: result.id});
 
     } catch(error)
